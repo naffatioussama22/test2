@@ -9,6 +9,8 @@ use App\Entity\Voiture;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\VoitureType;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class VoitureController extends AbstractController
 {
@@ -77,13 +79,69 @@ class VoitureController extends AbstractController
         $entityManager->remove($voiture[0]);
         $entityManager->flush();
         return $this->redirectToRoute('voiture');
-	}		
+    }		
+
  /**
      * @Route("/voiture", name="voiture")
      */
     public function index(): Response
     {  $voitures=$this->getDoctrine()->getRepository(voiture::class)->findAll();
 	return $this->render('voiture/index.html.twig',['voitures'=>$voitures,]);}
-	
+    
+    /**
+     * @Route("/admin", name="admin")
+	  * @IsGranted("ROLE_ADMIN")
+     */
+public function admin()
+{ $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+    $voitures = $this->getDoctrine()->getRepository(Voiture::class)->findAll();
+
+    $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+
+   
+            return $this->render('admin/index.html.twig', [
+             'voitures' => $voitures,
+             'users' => $users
+    ]);
+
+}
+
+/**
+        * @Route("/louer/{mat}", name="louerbaymat")
+        */
+        public function louer(string $mat, Request $request): Response
+        {
+          $entityManger = $this->getDoctrine()->getManager() ;
+          $voitures = $this->getDoctrine()->getRepository(Voiture::class)->findBy($arrayName = array('Matricule' => $mat ));
+          if(!$voitures)
+          {
+            throw $this->createNotFoundExeption(
+              'pas de voiture avec la matricule'.$mat
+            );
+ 
+          }
+ $voitures[0]->setDisponibilite(0);
+ $entityManger->flush();
+ return $this->redirectToRoute('createcnt');
+ }
+ 
+ /**
+  * @Route("/rendre/{mat}", name="rendrebaymat")
+  */
+ public function rendre(string $mat, Request $request): Response
+ {
+   $entityManger = $this->getDoctrine()->getManager() ;
+   $voitures = $this->getDoctrine()->getRepository(Voiture::class)->findBy($arrayName = array('Matricule' => $mat ));
+   if(!$voitures)
+   {
+     throw $this->createNotFoundExeption(
+       'pas de voiture avec la matricule'.$mat
+     );
+ 
+   }
+ $voitures[0]->setDisponibilite(1);
+ $entityManger->flush();
+ return $this->redirectToRoute('voiture');
+ }
 }
