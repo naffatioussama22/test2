@@ -14,14 +14,11 @@ class ContratController extends AbstractController
     /**
      * @Route("/contrat", name="contrat")
      */
-    public function index(): Response
-    {
-        return $this->render('contrat/index.html.twig', [
-            'controller_name' => 'ContratController',
-        ]);
-    }
+    
 
-
+ public function index(): Response
+    {  $contrats=$this->getDoctrine()->getRepository(contrat::class)->findAll();
+	return $this->render('contrat/index.html.twig',['contrats'=>$contrats,]);}
 
     /**
      * @Route("/createcontrat", name="createcnt")
