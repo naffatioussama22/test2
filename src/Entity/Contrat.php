@@ -38,10 +38,21 @@ class Contrat
     private $Kmretour;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Voiture::class, inversedBy="contracts")
+     * @ORM\ManyToOne(targetEntity=Voiture::class, inversedBy="contrats")
      * @ORM\JoinColumn(nullable=false)
      */
     private $voiture;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contrats")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Client;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Facture::class, mappedBy="Contrat", cascade={"persist", "remove"})
+     */
+    private $facture;
 
     public function getId(): ?int
     {
@@ -53,7 +64,7 @@ class Contrat
         return $this->Datedepart;
     }
 
-    public function setDatedepart(\DateTimeInterface $Datedepart): self
+    public function setDatedepart( $Datedepart): self
     {
         $this->Datedepart = $Datedepart;
 
@@ -65,7 +76,7 @@ class Contrat
         return $this->Dateretour;
     }
 
-    public function setDateretour(\DateTimeInterface $Dateretour): self
+    public function setDateretour($Dateretour): self
     {
         $this->Dateretour = $Dateretour;
 
@@ -106,5 +117,39 @@ class Contrat
         $this->voiture = $voiture;
 
         return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->Client;
+    }
+
+    public function setClient(?Client $Client): self
+    {
+        $this->Client = $Client;
+
+        return $this;
+    }
+
+    public function getFacture(): ?Facture
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(?Facture $facture): self
+    {
+        $this->facture = $facture;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newContrat = null === $facture ? null : $this;
+        if ($facture->getContrat() !== $newContrat) {
+            $facture->setContrat($newContrat);
+        }
+
+        return $this;
+    }
+    public function getperiode()
+    {
+        return $this->Dateretour->diff($this->Datedepart)->days;
     }
 }

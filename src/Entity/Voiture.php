@@ -66,6 +66,12 @@ class Voiture
      */
     private $contrats;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Agence::class, inversedBy="Voiture")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $agence;
+
     public function __construct()
     {
         $this->contrats = new ArrayCollection();
@@ -198,6 +204,18 @@ class Voiture
                 $contrat->setVoiture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAgence(): ?Agence
+    {
+        return $this->agence;
+    }
+
+    public function setAgence(?Agence $agence): self
+    {
+        $this->agence = $agence;
 
         return $this;
     }

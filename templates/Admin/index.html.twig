@@ -31,19 +31,18 @@
                                 <td> {{ voiture.nbrplace|e }} Places  </td> 
 
        							 <td>{% if voiture.disponibilite %}
-								 <a href="{{ path('editvoiturebymat', {mat: voiture.matricule}) }}" target="_blank">Modifier</a> 
+								 <a href="{{ path('editvoiturebymat', {mat: voiture.matricule}) }}" target="_blank">Modifier</a>
+                                  
 {% else%}
 
         				- 
 
        					 {% endif%}
 </td>
-<td>{%if voiture.disponibilite==1 %}
-<a href="{{ path('louerbaymat', {mat: voiture.Matricule}) }}" >louer</a><br>
-{%endif%}
-{%if voiture.disponibilite==0 %}
-<a href="{{ path('rendrebaymat', {mat: voiture.Matricule}) }}" >rendre</a><br>
-{%endif%}</td>
+<td>
+<a href="{{ path('supvoiture', {mat: voiture.Matricule}) }}" >Supprimer</a><br>
+
+</td>
                             </tr>
                             {% set i = i+1 %}
                         {% endfor %}
@@ -83,7 +82,36 @@
             </div>
      
         </div>
-    </div>
+    <div >
+
+    <h5>Agences</h5>
+    <a href="{{ path('create_agence') }}" class=navbar-brand">Ajouter</a><br>
+<table class="table">
+        <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>tel_agence</th>
+            <th>adresse</th>
+        </tr>
+{% set i = 1 %}
+        {% for Agence in Agences %}
+            <tr>
+                <td>{{ i }}</td>
+                <td>{{ Agence.Nom }}</td>
+                <td>{{ Agence.telagence }}</td>
+                  <td>{{ Agence.adresseville }}</td>
+                  <td>
+                  <a href="{{ path('modifieragencebynom', {Nom: Agence.Nom}) }}" target="_blank">Modifier</a>
+
+                <td>
+   </td>
+
+</tr>
+{% set i = i+1 %}
+{% endfor %}
+</table>
+</div>
+
 
 
 {% endblock %}

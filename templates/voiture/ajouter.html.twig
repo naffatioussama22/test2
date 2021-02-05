@@ -1,3 +1,4 @@
+{% extends 'base.html.twig' %}
 {%block body%}
 <h1>Ajouter une voiture</h1>
 {{form_start(form)}}
@@ -18,14 +19,21 @@
 {{form_widget(form.description,{'attr':{'placeholder':'Description de la voiture'}})}}
 </div>
 <div>
-{{form_label(form.datemiseencirculation)}}
-{{form_widget(form.datemiseencirculation)}}
+{{form_label(form.Datemiseencirculation)}}
+{{form_widget(form.Datemiseencirculation)}}
 </div>
 <div>
 {{form_widget(form.nbrplace,{'attr':{'placeholder':'Nombre de place'}})}}
 </div>
 <div>
-<input type="submit" name=""value="enregistrer"class=btn btn-primary">
+Disponibilite {{form_widget(form.disponibilite)}}
+</div>
+<div>
+Agence {{form_widget(form.agence)}}
+</div>
+<div>
+<input type="submit" name=""value="enregistrer"class="btn btn-primary">
 </div>
 {{form_end(form)}}
+
 {%endblock%}

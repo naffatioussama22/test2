@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Contrat;
 use App\Entity\Voiture;
+use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,15 +18,22 @@ class ContratType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dateDepart',DateTimeType::class)
-            ->add('dateRetour',DateTimeType::class)
-            ->add('kmDepart',IntegerType::class)
-            ->add('kmRetour',IntegerType::class)
-           
+            ->add('Datedepart',DateTimeType::class)
+            ->add('Dateretour',DateTimeType::class)
+            ->add('Kmdepart',IntegerType::class)
+            ->add('Kmretour',IntegerType::class)
+            
+
             ->add('voiture',EntityType::class,[
                 'class'=>Voiture::class,
-                'choice_label'=>'Matricule'
+                'choice_label'=>'matricule'
+
             ])
+            ->add('Client',EntityType::class,[
+                'class'=>Client::class,
+                'choice_label'=>'numpermis'
+            ])
+        ;
         ;
     }
 
@@ -36,4 +44,3 @@ class ContratType extends AbstractType
         ]);
     }
 }
-

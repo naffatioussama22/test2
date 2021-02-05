@@ -1,36 +1,231 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello VoitureController!{% endblock %}
-
+{% block title %}Agent{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-<table>
-<tr>
-<td>
-<h1>Voitures</h1>
-<ul>
-{%for voiture in voitures%}
-<li>{{voiture.marque|e}} {{voiture.couleur|e}} {{voiture.description|e}} {{voiture.carburant}}
-{%endfor%}
-</td>
-<td>
-<h1>Etat</h1>
-<ul>
-{%for voiture in voitures%}
-<li>
-{%if voiture.disponibilite==1%}
+    <div class="agent-page">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+
+                       <h5>Voitures</h5>
+
+                    <a href="{{ path('create_voiture') }}" class="navbar-brand">Ajouter</a><br>
+<table class="table">
+                        <tr>
+                            <th>#</th>
+                            <th>Marque</th>
+                            <th>Couleur</th>
+                            <th>Description</th>
+                           <th>Actions</th>
+                        </tr>
+ {% set i = 1 %}
+                                    {% for voiture in voitures %}
+
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ voiture.marque|e }}  </td>
+                                <td>{{ voiture.couleur|e }}  </td>
+                                <td>{{ voiture.description|e }} </td>
+                                <td>{% if voiture.disponibilite %}
+                     <a href="{{ path('editvoiturebymat', {mat: voiture.matricule}) }}" target="_blank">Modifier</a>
+                     <a href="{{ path('supvoiture', {mat: voiture.matricule}) }}" target="_blank">supprimer</a>
+             {% else%}
+
+                     				-
+
+
+                               {% endif%}
+
+            </td>
+            <td>{%if voiture.disponibilite==1 %}
 <a href="{{ path('louerbaymat', {mat: voiture.matricule}) }}" >louer</a><br>
 {%endif%}
-{%if voiture.disponibilite==0%}
+{%if voiture.disponibilite==0 %}
 <a href="{{ path('rendrebaymat', {mat: voiture.matricule}) }}" >rendre</a><br>
-{%endif%}
-{%endfor%}
-</td>
+{%endif%}</td>
+                                         </tr>
+                                         {% set i = i+1 %}
+                                     {% endfor %}
+
+                                 </table>
+                             </div>
+                         </div>
+             <div class="row">
+                             <div class="col s12 m-t-30">
+
+                                 <h5>Facture</h5>
+                                 <a href="{{ path('create_facture') }}" class=navbar-brand">Ajouter</a><br>
+             <table class="table">
+                                     <tr>
+                                         <th>#</th>
+                                         <th>montant</th>
+                                         <th>payement</th>
+                                     </tr>
+             {% set i = 1 %}
+
+                                  {% for facture in Factures%}
+                                         <tr>
+                                             <td>{{ i }}</td>
+                                             <td>{{facture.montant|e}}</td>
+                                             <td> {{facture.payee|e}}  </td>
+                                             <td>
+                                             {% if facture.payee==null%}
+                                    <a href="{{ path('payeebyid', {id: facture.id}) }}"><i class="material-icons red-text">payee</i></a>
+                                           {% endif %}
+                                           {% if facture.payee==1%}
+                                           -
+                                           {% endif %}
+
+                                </td>
+
+                            </tr>
+                            {% set i = i+1 %}
+                        {% endfor %}
+                    </table>
+</div>
+</div>
+
+
+
+
+<div >
+<div class="row">
+                <div class="col s12 m-t-30">
+
+    <h5>Contrat</h5>
+    <a href="{{ path('createcnt') }}" class=navbar-brand">Ajouter</a><br>
+<table class="table">
+        <tr>
+            <th>#</th>
+            <th>dateDepart</th>
+            <th>Date retour</th>
+            <th>Km depart</th>
+            <th>Km retour</th>
+        </tr>
+{% set i = 1 %}
+      {% for Contrat in Contrats%}
+            <tr>
+                <td>{{ i }}</td>
+                <td>{{Contrat.Datedepart|date('Y-m-d') }}</td>
+                <td>{{Contrat.Dateretour|date('Y-m-d')}}</td>
+                <td>{{Contrat.Kmdepart}}</td>
+                <td>{{Contrat.Kmretour}}</td>
+                  <td>
+                  <a href="{{path('modifiercontratbyid', {id: Contrat.id})  }}" target="_blank">Modifier</a>
+
+                <td>
+   </td>
+
 </tr>
+{% set i = i+1 %}
+{% endfor %}
 </table>
-<ul>
+</div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="row">
+                        <div class="col s12 m-t-30">
+
+            <h5>Client</h5>
+            <a href="{{ path('create_client') }}" class=navbar-brand">Ajouter</a><br>
+        <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>N_permis</th>
+                    <th>ville</th>
+                    <th>Tel</th>
+                </tr>
+        {% set i = 1 %}
+              {% for Client in Clients%}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td>{{Client.Nom|e }}</td>
+                        <td>{{Client.numpermis|e}}</td>
+                        <td>{{Client.ville}}</td>
+                        <td>{{Client.Tel}}</td>
+                          <td>
+                          <a href="{{ path('modifierclientbynpermis', {numpermis: Client.numpermis}) }}" target="_blank">Modifier</a>
+
+                        <td>
+           </td>
+
+        </tr>
+        {% set i = i+1 %}
+        {% endfor %}
+        </table>
+        </div>
+                    </div>
+
+
+                    <div >
+                    <td>
+                     <h1>Statistics (Statistique)
+</h1>
+                    
+                    {% set i = 0 %}
+                        {% for voiture in voitures%}
+                          
+
+                          
+                          {%if voiture.getDisponibilite==1%}
+                          {% set i =i+1 %}
+                          {%endif%}
+
+                          
+
+
+
+                           
+                        {% endfor %}
+                       nbr des voiture disponibilite :{{i}}<br>
+                   
+
+
+
+
+                    {% set i = 0 %}
+                        {% for voiture in voitures%}
+                         
+                          {%if voiture.getDisponibilite!=1%}
+                          {% set i =i+1 %}
+                          {%endif%}
+
+                         
+
+
+
+                           
+                        {% endfor %}
+                      nbr des voiture indisponibilite :{{i}}<br>
+                   
+                    {% set i = 0 %}
+                        {% for facture in Factures%}
+                         
+                          {%if facture.payee!=1%}
+                          {% set i =i+1 %}
+                          {%endif%}
+
+
+                        {% endfor %}
+                      nbr des factures impayee :{{i}}<br>
+
+                   
+                    {% set i = i+1 %}
+
+                    </table>
+                    </div>
+                                </div>
+
+
+
+
+                </div>
+
 
 {% endblock %}
