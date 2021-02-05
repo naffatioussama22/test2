@@ -1,0 +1,248 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello VoitureController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 2000px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+  <div class="container">
+           <div class="row">
+
+           <div class="col s12 m-t-30">
+                       <h1>Voitures</h1>
+
+                   
+<table class="table">
+                        <tr>
+                            <th>#</th>
+                            <th>Marque</th>
+                            <th>Couleur</th>
+                            <th>Description</th>
+                            <th>Nombre de place</th>
+                            <th>Action 1</th>
+                            
+                        </tr>
+ {% set i = 1 %}
+                        {% for voiture in voitures %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ voiture.marque|e }}  </td>
+                                <td>{{ voiture.couleur|e }}  </td>
+                                <td>{{ voiture.description|e }} </td>
+                                <td> {{ voiture.nbrplace|e }} Places  </td> 
+
+       							
+</td>
+<td>{%if voiture.disponibilite==1 %}
+<a href="{{ path('louerbaymat', {mat: voiture.matricule}) }}" >louer</a><br>
+{%endif%}
+{%if voiture.disponibilite==0 %}
+<a href="{{ path('rendrebaymat', {mat: voiture.matricule}) }}" >rendre</a><br>
+{%endif%}</td>
+                            </tr>
+                            {% set i = i+1 %}
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+</table>
+
+
+ 
+
+
+<div class="row">
+
+<div class="col s12 m-t-30">
+<h1>Clients</h1>
+<a href="{{ path('create_client') }}" class=navbar-brand">Creer</a><br>
+<table class="table">
+   <tr>
+                            <th>#</th>
+                            <th>Nom</th>
+                            <th>NumPermis</th>
+                            <th>Ville </th>
+                            <th>Tel </th>
+                            <th>Action 1 </th>
+                            <th>Action 2 </th>
+                            
+                             
+                        </tr>
+ {% set i = 1 %}
+      {% for client in clients %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ client.Nom|e }}  </td>
+                                <td>{{ client.numPermis|e }}  </td>
+                                <td>{{ client.ville|e }}  </td>
+                                <td>{{ client.Tel|e }}  </td>
+                                
+                           
+           
+
+								 
+            <td>								 <a href="{{ path('modifierclientbynpermis', {numpermis: client.numpermis}) }}" target="_blank">Modifier</a>  </td>
+            <td>								 <a href="{{ path('supprimerclientbynpermis', {numpermis: client.numpermis}) }}" target="_blank">Supprimer</a>  </td>
+
+     {% endfor %}
+
+</td>
+
+                            </tr>
+                            {% set i = i+1 %}
+                       
+                    </table>
+                </div>
+            </div>
+  </table>
+
+  <div class="row">
+
+<div class="col s12 m-t-30">
+<h1>Contrats</h1>
+
+<a href="{{ path('createcnt') }}" class=navbar-brand">Creer</a><br>
+
+<table class="table">
+   <tr>
+                            <th>#</th>
+                            <th>date_depart</th>
+                            <th>date_retour</th>
+                            <th>Action </th>
+                        </tr>
+ {% set i = 1 %}
+      {% for Contrat in Contrats %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{Contrat.datedepart|date('Y-m-d') }} </td>
+                                <td>{{Contrat.dateretour|date('Y-m-d')}} </td>
+                                <td>
+
+								 <a href="{{ path('supcontratbyid', {id: Contrat.id}) }}" target="_blank">Supprimer</a> 
+          
+     {% endfor %}
+
+</td>
+
+                            </tr>
+                            {% set i = i+1 %}
+                       
+                    </table>
+                </div>
+            </div>
+  
+</table>
+  
+
+
+  <div class="row">
+
+<div class="col s12 m-t-30">
+<h1>Factures</h1>
+ <a href="{{ path('create_facture') }}" class=navbar-brand">Creer</a><br>
+<table class="table">
+   <tr>
+                            <th>#</th>
+                            <th>montant</th>
+                            <th>dateFacture</th>
+                            <th>payee</th>
+                            <th>Action </th>
+                        </tr>
+ {% set i = 1 %}
+      {% for facture in factures %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ facture.Montant|e }}  </td>
+                                <td>{{ facture.DateDeFacture|date('Y-m-d') }}  </td>
+                                <td>{{ facture.payee|e }}  </td>
+                                <td>
+            {% if facture.payee==null%}
+
+                <a href="{{ path('payeebyid', {id: facture.id}) }}" >payer</a><br>
+            {% endif %}
+     {% endfor %}
+
+</td>
+
+                            </tr>
+                            {% set i = i+1 %}
+                       
+                    </table>
+                </div>
+            </div>
+  
+</table>
+
+
+  <div class="row">
+
+<div class="col s12 m-t-30">
+<h1>Statiques</h1>
+<table class="table">
+<tr><th>Nombres des voitures disponibles:</th>
+
+{% set i = 0 %}
+
+      {% for voiture in voitures %}
+        
+           
+           <td>{%if voiture.disponibilite==1 %}</td>
+           {% set i = i+1 %}
+           {%endif%}
+        
+       {% endfor %}
+       </tr>
+       <td> {{i}} </td>
+
+
+
+
+
+       <div class="row">
+
+<div class="col s12 m-t-30">
+
+<table class="table">
+<tr><th>Nombres de voitures à rendre dans le stock :</th>
+
+{% set j= 0 %}
+
+      {% for voiture in voitures %}
+        
+           
+           <td>{%if voiture.disponibilite==0 %}</td>
+           {% set j = j+1 %}
+           {%endif%}
+           
+       {% endfor %}
+       </tr>
+       <td> {{j}} </td>
+       </table>
+
+ <div class="row">
+
+<div class="col s12 m-t-30">
+
+<table class="table">
+<tr><th>Nombres de factures impayées :</th>
+
+{% set t= 0 %}
+
+      {% for facture in factures %}
+        
+           
+           <td>{%if facture.payee==0 %}</td>
+           {% set t = t+1 %}
+           {%endif%}
+           
+       {% endfor %}
+       </tr>
+       <td> {{t}} </td>
+       </table>
+
+
+
+{% endblock %}

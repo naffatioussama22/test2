@@ -129,9 +129,33 @@ public function admin()
     ]);
 
 }
+/**
+     * @Route("/agent", name="agent")
+     * @IsGranted("ROLE_AGENT")
+   */
+  public function agent()
+  {
+       $this->denyAccessUnlessGranted('ROLE_AGENT');
+      $voitures = $this->getDoctrine()->getRepository(Voiture::class)->findAll();
+
+      $contrats = $this->getDoctrine()->getRepository(Contrat::class)->findAll();
+
+      $clients = $this->getDoctrine()->getRepository(Client::class)->findAll();
+
+      $factures = $this->getDoctrine()->getRepository(Facture::class)->findAll();
+      
+          return $this->render('agent/index.html.twig', [
+               'voitures' => $voitures,
+               'Contrats' => $contrats,
+               'clients'=>$clients,
+               'factures'=>$factures
+      ]);
+  }
+
 
 /**
         * @Route("/louer/{mat}", name="louerbaymat")
+        * @IsGranted("ROLE_AGENT")
         */
         public function louer(string $mat, Request $request): Response
         {
@@ -151,6 +175,7 @@ public function admin()
  
  /**
   * @Route("/rendre/{mat}", name="rendrebaymat")
+  * @IsGranted("ROLE_AGENT")
   */
  public function rendre(string $mat, Request $request): Response
  {

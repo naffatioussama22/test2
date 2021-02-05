@@ -18,8 +18,8 @@ class SecurityController extends AbstractController
            return $this->redirectToRoute('admin');
         }
 
-        else if ($this->isGranted("ROLE_USER")){
-            return $this->redirectToRoute('voiture');
+        else if ($this->isGranted("ROLE_AGENT")){
+            return $this->redirectToRoute('agent');
 
         }
 

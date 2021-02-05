@@ -27,7 +27,7 @@ class ContratController extends AbstractController
 
     /**
      * @Route("/createcontrat", name="createcnt")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_AGENT")
      */
     public function creatContrat(Request $request) :Response {
         
@@ -51,7 +51,7 @@ class ContratController extends AbstractController
 
       /**
      * @Route("/modifiercontrat/{id}", name="modifiercontratbyid")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_AGENT")
      */
     public function modifier(string $id, Request $request): Response
     {
@@ -62,6 +62,7 @@ class ContratController extends AbstractController
         throw $this->createNotFoundExeption(
           'pas de contrat avec ce id'.$id
         );
+
 
       }
       $Contrat=$Contrat[0];
@@ -80,6 +81,21 @@ class ContratController extends AbstractController
         'form'=>$form->createView()
       ]);}
 
-
+/**
+     * @Route("/supprimercontrat/{id}", name="supcontratbyid")
+     * @IsGranted("ROLE_AGENT")
+     */
+    public function supprimer (String $id) : Response {
+        $entityManager =$this->getDoctrine()->getManager();
+        $Contrat=$this->getDoctrine()->getRepository(Contrat::class)->findBy(array('id'=>$id));
+        if (!$Contrat){
+          throw $this->createNotFoundException(
+              'pas de contrat avec l"id"'.$id
+          );
+        }
+        $entityManager->remove($User[0]);
+        $entityManager->flush();
+        return $this->redirectToRoute('user');
+    }
 
 }

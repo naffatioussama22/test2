@@ -26,7 +26,7 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/createclient", name="create_client")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_AGENT")
      */
      public function createclient(Request $request):Response
      {
@@ -48,7 +48,7 @@ class ClientController extends AbstractController
 
        /**
         * @Route("/modifierclient/{numpermis}", name="modifierclientbynpermis")
-        * @IsGranted("ROLE_ADMIN")
+        * @IsGranted("ROLE_AGENT")
         */
        public function modifier(string $numpermis, Request $request): Response
        {
@@ -79,7 +79,7 @@ class ClientController extends AbstractController
 
          /**
           * @Route("/supprimerclient/{numpermis}", name="supprimerclientbynpermis")
-          * @IsGranted("ROLE_ADMIN")
+          * @IsGranted("ROLE_AGENT")
           */
          public function supprimer(string $numpermis): Response
          {
